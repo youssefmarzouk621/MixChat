@@ -1,6 +1,6 @@
-# chatup
+# MixChat
 
-chatup serverless chat
+real-time serverless chat
 
 ## Getting Started
 
