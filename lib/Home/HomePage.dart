@@ -1,3 +1,4 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:chatup/CustomWidgets/flat_action_btn.dart';
 import 'package:chatup/CustomWidgets/flat_page_header.dart';
 import 'package:chatup/CustomWidgets/flat_page_wrapper.dart';
@@ -32,7 +33,12 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
 
-    ws.onSuccess(() {
+    ws.onSuccess(() async {
+      await Flushbar(
+          title: 'Hey Youssef',
+          message: 'Connected successfully',
+          duration: Duration(seconds: 3),
+      ).show(context);
       print("new connection");
     });
 
@@ -44,8 +50,15 @@ class _HomepageState extends State<Homepage> {
       print(data);
     });
 
-    ws.onClose(() {
-      print("closed");
+    ws.onClose(() async {
+      print("closed without logout");
+      await Flushbar(
+          title: 'Warning',
+          message: 'Lost connection ...',
+          duration: Duration(seconds: 3),
+      ).show(context);
+      ws.open("wss://tranquil-journey-23890.herokuapp.com");
+
     });
 
 
@@ -53,8 +66,8 @@ class _HomepageState extends State<Homepage> {
       body: new WillPopScope(
         onWillPop: () async => false,
         child: FlatPageWrapper(
-          scrollType: ScrollType.floatingHeader,
-          header: FlatPageHeader(
+            scrollType: ScrollType.floatingHeader,
+            header: FlatPageHeader(
             prefixWidget: Text(""),
             title: "MixChat",
             suffixWidget: FlatActionButton(
@@ -67,9 +80,7 @@ class _HomepageState extends State<Homepage> {
               iconData: Icons.logout,
             ),
           ),
-          children: [
-              Tabs[index],
-          ],
+          child: Tabs[index],
         ),
       ),
 
