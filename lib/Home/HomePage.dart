@@ -5,6 +5,8 @@ import 'package:chatup/Home/ChatList.dart';
 import 'package:chatup/Home/ContactList.dart';
 
 import 'package:flutter/material.dart';
+import 'package:sm_websocket/sm_websocket.dart';
+
 class Homepage extends StatefulWidget {
 
   @override
@@ -14,6 +16,7 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
 
   int index = 0;
+  WebSocket ws = WebSocket();
 
   final Tabs = [
     ChatList(),
@@ -21,25 +24,53 @@ class _HomepageState extends State<Homepage> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    ws.open("wss://tranquil-journey-23890.herokuapp.com");
+  }
+
+  @override
   Widget build(BuildContext context) {
 
+    ws.onSuccess(() {
+      print("new connection");
+    });
+
+    ws.onFail(() {
+      print("fail");
+    });
+
+    ws.onMessage((data) {
+      print(data);
+    });
+
+    ws.onClose(() {
+      print("closed");
+    });
 
 
     return Scaffold(
-
-      body: FlatPageWrapper(
-        scrollType: ScrollType.floatingHeader,
-        header: FlatPageHeader(
-          prefixWidget: Text(""),
-          title: "MixChat",
-          suffixWidget: FlatActionButton(
-
-            iconData: Icons.logout,
+      body: new WillPopScope(
+        onWillPop: () async => false,
+        child: FlatPageWrapper(
+          scrollType: ScrollType.floatingHeader,
+          header: FlatPageHeader(
+            prefixWidget: Text(""),
+            title: "MixChat",
+            suffixWidget: FlatActionButton(
+              onPressed: (){
+                ws.close();
+                ws.onClose(() {
+                  print("closed connection");
+                });
+              },
+              iconData: Icons.logout,
+            ),
           ),
+          children: [
+              Tabs[index],
+          ],
         ),
-        children: [
-            Tabs[index],
-        ],
       ),
 
       bottomNavigationBar: BottomNavigationBar(
