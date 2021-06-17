@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         ),
         // You can change theme colors to directly change colors for the whole
         // app.
-        primaryColor: Color(0xff5B428F),
+        primaryColor: Color(0xff435de6),
         accentColor: Color(0xffF56D58),
         primaryColorDark: Color(0xffFFFFFF),
         primaryColorLight: Color(0xff000000),

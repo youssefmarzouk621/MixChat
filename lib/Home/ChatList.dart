@@ -4,6 +4,7 @@ import 'package:chatup/CustomWidgets/flat_chat_item.dart';
 import 'package:chatup/CustomWidgets/flat_counter.dart';
 import 'package:chatup/CustomWidgets/flat_profile_image.dart';
 import 'package:chatup/CustomWidgets/flat_section_header.dart';
+import 'package:chatup/Story/Story.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +17,7 @@ class ChatList extends StatefulWidget{
 }
 
 class _ChatListState extends State<ChatList> {
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -39,9 +41,9 @@ class _ChatListState extends State<ChatList> {
                 child: FlatAddStoryBtn(
                   onPressed: () {
                     print("clicked add story");
-                    /*Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => SignUpPage())
-                      );*/
+                    Navigator.push(
+                        context, MaterialPageRoute(builder: (context) => Story())
+                    );
                   },
                 ),
               ),

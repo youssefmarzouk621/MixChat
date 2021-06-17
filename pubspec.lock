@@ -116,6 +116,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.3.0"
+  page_transition:
+    dependency: "direct main"
+    description:
+      name: page_transition
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.7+6"
   path:
     dependency: transitive
     description:
@@ -191,6 +198,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  sm_websocket:
+    dependency: "direct main"
+    description:
+      name: sm_websocket
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.5"
   source_span:
     dependency: transitive
     description:
