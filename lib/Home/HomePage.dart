@@ -45,7 +45,8 @@ class _HomepageState extends State<Homepage> {
     });
 
     ws.onClose(() {
-      print("closed");
+      print("closed without logout");
+      ws.open("wss://tranquil-journey-23890.herokuapp.com");
     });
 
 
@@ -53,8 +54,8 @@ class _HomepageState extends State<Homepage> {
       body: new WillPopScope(
         onWillPop: () async => false,
         child: FlatPageWrapper(
-          scrollType: ScrollType.floatingHeader,
-          header: FlatPageHeader(
+            scrollType: ScrollType.floatingHeader,
+            header: FlatPageHeader(
             prefixWidget: Text(""),
             title: "MixChat",
             suffixWidget: FlatActionButton(
@@ -67,9 +68,7 @@ class _HomepageState extends State<Homepage> {
               iconData: Icons.logout,
             ),
           ),
-          children: [
-              Tabs[index],
-          ],
+          child: Tabs[index],
         ),
       ),
 

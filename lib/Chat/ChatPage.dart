@@ -35,50 +35,58 @@ class _ChatPageState extends State<ChatPage> {
             },
           ),
         ),
-        children: [
-          FlatChatMessage(
-            message: "Hello World!, This is the first message.",
-            messageType: MessageType.sent,
-            showTime: true,
-            time: "2 mins ago",
+        child: ListView(//child
+          reverse: true,
+          padding: EdgeInsets.only(
+            top: 122.0,
+            bottom: 80.0,
           ),
-          FlatChatMessage(
-            message: "Typing another message from the input box.",
-            messageType: MessageType.sent,
-            showTime: true,
-            time: "2 mins ago",
-          ),
-          FlatChatMessage(
-            message: "Message Length Small.",
-            showTime: true,
-            time: "2 mins ago",
-          ),
-          FlatChatMessage(
-            message: "Message Length Large. This message has more text to configure the size of the message box.",
-            showTime: true,
-            time: "2 mins ago",
-          ),
-          FlatChatMessage(
-            message: "Meet me tomorrow at the coffee shop.",
-            showTime: true,
-            time: "2 mins ago",
-          ),
-          FlatChatMessage(
-            message: "Around 11 o'clock.",
-            showTime: true,
-            time: "2 mins ago",
-          ),
-          FlatChatMessage(
-            message: "Flat Social UI kit is going really well. Hope this finishes soon.",
-            showTime: true,
-            time: "2 mins ago",
-          ),
-          FlatChatMessage(
-            message: "Final Message in the list.",
-            showTime: true,
-            time: "2 mins ago",
-          ),
-        ],
+          children: [
+            FlatChatMessage(
+              message: "Hello World!, This is the first message.",
+              messageType: MessageType.sent,
+              showTime: true,
+              time: "2 mins ago",
+            ),
+            FlatChatMessage(
+              message: "Typing another message from the input box.",
+              messageType: MessageType.sent,
+              showTime: true,
+              time: "2 mins ago",
+            ),
+            FlatChatMessage(
+              message: "Message Length Small.",
+              showTime: true,
+              time: "2 mins ago",
+            ),
+            FlatChatMessage(
+              message: "Message Length Large. This message has more text to configure the size of the message box.",
+              showTime: true,
+              time: "2 mins ago",
+            ),
+            FlatChatMessage(
+              message: "Meet me tomorrow at the coffee shop.",
+              showTime: true,
+              time: "2 mins ago",
+            ),
+            FlatChatMessage(
+              message: "Around 11 o'clock.",
+              showTime: true,
+              time: "2 mins ago",
+            ),
+            FlatChatMessage(
+              message: "Flat Social UI kit is going really well. Hope this finishes soon.",
+              showTime: true,
+              time: "2 mins ago",
+            ),
+            FlatChatMessage(
+              message: "Final Message in the list.",
+              showTime: true,
+              time: "2 mins ago",
+            ),
+          ],
+        ),
+
         footer: FlatMessageInputBox(
           prefix: FlatActionButton(
             iconData: Icons.add,
