@@ -4,9 +4,13 @@ import 'package:chatup/CustomWidgets/flat_message_input_box.dart';
 import 'package:chatup/CustomWidgets/flat_page_header.dart';
 import 'package:chatup/CustomWidgets/flat_page_wrapper.dart';
 import 'package:chatup/CustomWidgets/flat_profile_image.dart';
+import 'package:chatup/Models/User.dart';
+import 'package:chatup/Statics/Statics.dart';
 import 'package:flutter/material.dart';
 
 class ChatPage extends StatefulWidget {
+  User friend;
+  ChatPage(this.friend);
 
   @override
   _ChatPageState createState() => _ChatPageState();
@@ -25,13 +29,14 @@ class _ChatPageState extends State<ChatPage> {
               Navigator.pop(context);
             },
           ),
-          title: "Alix Cage",
+          title: widget.friend.firstName+" "+widget.friend.lastName,
+          textSize: 22,
           suffixWidget: FlatProfileImage(
             size: 35.0,
             onlineIndicator: true,
-            imageUrl: 'https://images.pexels.com/photos/3866555/pexels-photo-3866555.png?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
+            imageUrl: baseUploadsURL+widget.friend.avatar,
             onPressed: () {
-              print("Clicked Profile Image");
+              print("Clicked to open Profile");
             },
           ),
         ),

@@ -87,9 +87,9 @@ class _ChatListState extends State<ChatList> {
               print("long pressed");
             },
             onPressed: () {
-              Navigator.push(
+              /*Navigator.push(
                   context, MaterialPageRoute(builder: (context) => ChatPage())
-              );
+              );*/
             },
             name: "Akshaye JH",
             profileImage: FlatProfileImage(
