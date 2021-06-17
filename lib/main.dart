@@ -12,14 +12,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This changes font for the entire app using the Google Fonts package
-        // from pub.dev : https://pub.dev/packages/google_fonts
         textTheme: GoogleFonts.nunitoSansTextTheme(
           Theme.of(context).textTheme,
         ),
-        // You can change theme colors to directly change colors for the whole
-        // app.
-        primaryColor: Color(0xff5B428F),
+        primaryColor: Color(0xff435de6),
         accentColor: Color(0xffF56D58),
         primaryColorDark: Color(0xff262833),
         primaryColorLight: Color(0xffFCF9F5),
