@@ -41,7 +41,7 @@ class _HomepageState extends State<Homepage> {
       ).show(context);
       print("new connection");
     });
- 
+
     ws.onFail(() {
       print("fail");
     });

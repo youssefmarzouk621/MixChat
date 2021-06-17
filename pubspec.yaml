@@ -33,7 +33,7 @@ dependencies:
   sm_websocket: ^0.0.5
   flutter_spinkit: "^4.1.2"
   another_flushbar: ^1.10.23
-
+  intl:
 dev_dependencies:
   flutter_test:
     sdk: flutter
