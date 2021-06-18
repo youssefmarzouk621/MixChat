@@ -19,15 +19,16 @@ class _HomepageState extends State<Homepage> {
   int index = 0;
   WebSocket ws = WebSocket();
 
-  final Tabs = [
-    ChatList(),
-    ContactList(),
-  ];
+  List<Widget> Tabs = [];
 
   @override
   void initState() {
     super.initState();
     ws.open("wss://tranquil-journey-23890.herokuapp.com");
+    Tabs = [
+      ChatList(),
+      ContactList(ws),
+    ];
   }
 
   @override
@@ -42,8 +43,13 @@ class _HomepageState extends State<Homepage> {
       print("new connection");
     });
 
-    ws.onFail(() {
+    ws.onFail(() async {
       print("fail");
+      await Flushbar(
+          title: 'Error (Failed)',
+          message: 'Connection Failed',
+          duration: Duration(seconds: 3),
+      ).show(context);
     });
 
     ws.onMessage((data) {
@@ -53,7 +59,7 @@ class _HomepageState extends State<Homepage> {
     ws.onClose(() async {
       print("closed without logout");
       await Flushbar(
-          title: 'Warning',
+          title: 'Warning (Closed)',
           message: 'Lost connection ...',
           duration: Duration(seconds: 3),
       ).show(context);

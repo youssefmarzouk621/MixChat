@@ -1,4 +1,3 @@
-import 'package:chatup/Chat/ChatPage.dart';
 import 'package:chatup/CustomWidgets/flat_add_story_btn.dart';
 import 'package:chatup/CustomWidgets/flat_chat_item.dart';
 import 'package:chatup/CustomWidgets/flat_counter.dart';
