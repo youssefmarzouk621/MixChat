@@ -1,5 +1,6 @@
 
-class User {
+class CoreUser {
+
   String id;
   String firstName;
   String lastName;
@@ -7,9 +8,12 @@ class User {
   String password;
   String phone;
   String avatar;
-  int verified;
 
-  User(
+  String token;
+  String pincode;
+  String touchId;
+
+  CoreUser(
       this.id,
       this.firstName,
       this.lastName,
@@ -17,18 +21,25 @@ class User {
       this.password,
       this.phone,
       this.avatar,
-      this.verified
-      );
 
-  User.fromJson(Map<String, dynamic> json) {
-    this.id = json['_id'] as String;
+      this.token,
+      this.pincode,
+      this.touchId
+  );
+
+  CoreUser.fromJson(Map<String, dynamic> json) {
+    this.id = json['id'] as String;
+
     this.firstName = json['firstName'] as String;
     this.lastName = json['lastName'] as String;
     this.email = json['email'] as String;
     this.password = json['password'] as String;
     this.phone = json['phone'] as String;
     this.avatar = json['avatar'] as String;
-    this.verified = json['verified'] as int;
+
+    this.token = json['token'] as String;
+    this.pincode = json['pincode'] as String;
+    this.touchId = json['touchId'] as String;
   }
 
 

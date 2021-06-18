@@ -35,6 +35,7 @@ dependencies:
   another_flushbar: ^1.10.23 # Notifications
   intl: # dateTime Parsing and Formatting
   grouped_list: ^3.2.3 # Grouping Messages by Date
+  sqflite: # local Storage
 
 dev_dependencies:
   flutter_test:
