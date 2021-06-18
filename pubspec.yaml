@@ -36,6 +36,7 @@ dependencies:
   intl: # dateTime Parsing and Formatting
   grouped_list: ^3.2.3 # Grouping Messages by Date
   sqflite: # local Storage
+  flutter_easyloading:
 
 dev_dependencies:
   flutter_test:

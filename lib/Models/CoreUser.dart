@@ -1,4 +1,6 @@
 
+import 'package:chatup/Models/User.dart';
+
 class CoreUser {
 
   String id;
@@ -40,6 +42,21 @@ class CoreUser {
     this.token = json['token'] as String;
     this.pincode = json['pincode'] as String;
     this.touchId = json['touchId'] as String;
+  }
+
+  CoreUser.fromUser(User user,String token,String pincode,String touchId) {
+    this.id = user.id;
+
+    this.firstName = user.firstName;
+    this.lastName = user.lastName;
+    this.email = user.email;
+    this.password = user.password;
+    this.phone = user.password;
+    this.avatar = user.avatar;
+
+    this.token = token;
+    this.pincode = pincode;
+    this.touchId = touchId;
   }
 
 
