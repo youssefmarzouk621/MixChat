@@ -9,11 +9,13 @@ class FlatChatMessage extends StatelessWidget {
   final Color textColor;
   final String time;
   final bool showTime;
+
+
+
   final double maxWidth;
   final double minWidth;
 
-  FlatChatMessage(
-      {this.message, this.messageType, this.backgroundColor, this.textColor, this.time, this.showTime, this.minWidth, this.maxWidth});
+  FlatChatMessage({this.message, this.messageType, this.backgroundColor, this.textColor, this.time, this.showTime, this.minWidth, this.maxWidth});
 
   CrossAxisAlignment messageAlignment() {
     if (messageType == null || messageType == MessageType.received) {
@@ -41,17 +43,17 @@ class FlatChatMessage extends StatelessWidget {
 
   Color messageBgColor(BuildContext context) {
     if (messageType == null || messageType == MessageType.received) {
-      return Theme.of(context).primaryColor;
-    } else {
       return Theme.of(context).primaryColorDark.withOpacity(0.1);
+    } else {
+      return Theme.of(context).primaryColor;
     }
   }
 
   Color messageTextColor(BuildContext context) {
     if (messageType == null || messageType == MessageType.received) {
-      return Colors.white;
-    } else {
       return Theme.of(context).primaryColorDark;
+    } else {
+      return Colors.white;
     }
   }
 
@@ -73,7 +75,7 @@ class FlatChatMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(
-        vertical: 12.0,
+        vertical: 3.0,
         horizontal: 24.0,
       ),
       child: Column(
@@ -104,8 +106,7 @@ class FlatChatMessage extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(
-              vertical: 4.0,
-              horizontal: 12.0,
+              vertical: 3.0,
             ),
             child: messageTime(),
           ),

@@ -4,10 +4,14 @@ import 'package:flutter/material.dart';
 class FlatMessageInputBox extends StatelessWidget {
   final Widget prefix;
   final Widget suffix;
+  final Widget messageField;
+  final Widget sendBtn;
+
   final bool roundedCorners;
-  final Function onChanged;
-  final Function onSubmitted;
-  FlatMessageInputBox({this.prefix, this.suffix, this.roundedCorners, this.onChanged, this.onSubmitted});
+
+
+  FlatMessageInputBox({this.prefix, this.suffix, this.roundedCorners, this.messageField, this.sendBtn});
+
 
   @override
   Widget build(BuildContext context) {
@@ -53,36 +57,18 @@ class FlatMessageInputBox extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
           children: [
-            prefix ?? SizedBox(width: 0, height: 0,),
+            prefix ?? SizedBox(width: 0, height: 0),
             Expanded(
-              child: TextField(
-                onChanged: onChanged,
-                onSubmitted: onSubmitted,
-                decoration: InputDecoration(
-                  hintText: "Enter Message...",
-                  hintStyle: TextStyle(
-                    color: Theme.of(context).primaryColorDark.withOpacity(0.6),
-                  ),
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.all(16.0,),
-                ),
-                style: TextStyle(
-                    color: Theme.of(context).primaryColorDark
-                ),
-              ),
+              child: messageField,
             ),
-            suffix ?? SizedBox(width: 0, height: 0,),
-            FlatActionButton(
-              icon: Icon(
-                Icons.send,
-                size: 24.0,
-                color: Theme.of(context).primaryColorDark,
-              ),
-            ),
+            suffix ?? SizedBox(width: 0, height: 0),
+            sendBtn,
           ],
         ),
       ),
     );
   }
 }
+
+
 

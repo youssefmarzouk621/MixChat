@@ -6,10 +6,14 @@ import 'package:chatup/Statics/Statics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:sm_websocket/sm_websocket.dart';
 
 
 
 class ContactList extends StatefulWidget{
+  WebSocket ws;
+
+  ContactList(this.ws);
 
   @override
   _ContactListState createState() => _ContactListState();
@@ -46,7 +50,7 @@ class _ContactListState extends State<ContactList> {
                   return FlatChatItem(
                     onPressed: (){
                       Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => ChatPage(snapshot.data[index]))
+                          context, MaterialPageRoute(builder: (context) => ChatPage(snapshot.data[index],widget.ws))
                       );
                     },
                     profileImage: FlatProfileImage(
