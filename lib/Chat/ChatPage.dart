@@ -8,6 +8,7 @@ import 'package:chatup/CustomWidgets/flat_profile_image.dart';
 import 'package:chatup/Models/Message.dart';
 import 'package:chatup/Models/User.dart';
 import 'package:chatup/Statics/Statics.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 class ChatPage extends StatefulWidget {
@@ -21,6 +22,7 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
 
   List<Message> messages = [];
+
   final ChatController chatController = ChatController();
   @override
   void initState() {
@@ -30,8 +32,19 @@ class _ChatPageState extends State<ChatPage> {
       receiver: "60cb38f5063b48abf6cedc2d", //(connectedUser)
     ).then((result) {
 
+
+        result.sort((m1,m2) {
+          return m1.createdAt.compareTo(m2.createdAt);
+        });
+
+
+        final groups = groupBy(result, (Message message) {
+          Duration difference = message.createdAt.difference(result.);
+          return e.country;
+        });
+
         setState(() {
-          messages = result;
+          messages = result.reversed.toList();
         });
     });
   }
@@ -40,7 +53,7 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FlatPageWrapper(
-        scrollType: ScrollType.floatingHeader,
+        scrollType: ScrollType.fixedHeader,
         reverseBodyList: true,
         header: FlatPageHeader(
           prefixWidget: FlatActionButton(
@@ -62,8 +75,7 @@ class _ChatPageState extends State<ChatPage> {
         child: ListView.builder(
           itemCount: messages.length,
           padding: EdgeInsets.only(
-            top: 122.0,
-            bottom: 80.0,
+            bottom: 5.0,
           ),
           reverse: true,
           itemBuilder: (context, index) {
@@ -77,15 +89,20 @@ class _ChatPageState extends State<ChatPage> {
           },
         ),
 
-        footer: FlatMessageInputBox(
-          prefix: FlatActionButton(
-            iconData: Icons.add,
-            iconSize: 24.0,
+        footer: Container(
+          padding: EdgeInsets.only(
+            bottom: 10.0,
           ),
-          roundedCorners: true,
-          suffix: FlatActionButton(
-            iconData: Icons.image,
-            iconSize: 24.0,
+          child: FlatMessageInputBox(
+            prefix: FlatActionButton(
+              iconData: Icons.add,
+              iconSize: 24.0,
+            ),
+            roundedCorners: true,
+            suffix: FlatActionButton(
+              iconData: Icons.image,
+              iconSize: 24.0,
+            ),
           ),
         ),
       ),

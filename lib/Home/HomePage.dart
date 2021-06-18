@@ -42,8 +42,13 @@ class _HomepageState extends State<Homepage> {
       print("new connection");
     });
 
-    ws.onFail(() {
+    ws.onFail(() async {
       print("fail");
+      await Flushbar(
+          title: 'Error (Failed)',
+          message: 'Connection Failed',
+          duration: Duration(seconds: 3),
+      ).show(context);
     });
 
     ws.onMessage((data) {
@@ -53,7 +58,7 @@ class _HomepageState extends State<Homepage> {
     ws.onClose(() async {
       print("closed without logout");
       await Flushbar(
-          title: 'Warning',
+          title: 'Warning (Closed)',
           message: 'Lost connection ...',
           duration: Duration(seconds: 3),
       ).show(context);
