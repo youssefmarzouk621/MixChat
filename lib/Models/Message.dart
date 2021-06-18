@@ -33,5 +33,13 @@ Message.fromJson(Map<String, dynamic> json,String connected) {
 
 }
 
+Map<String, dynamic> toJson() => {
+  'sender': sender,
+  'receiver': receiver,
+  'type': type,
+  'message': message,
+  'createdAt': createdAt.toString(),
+};
+
 
 }

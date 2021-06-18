@@ -19,15 +19,16 @@ class _HomepageState extends State<Homepage> {
   int index = 0;
   WebSocket ws = WebSocket();
 
-  final Tabs = [
-    ChatList(),
-    ContactList(),
-  ];
+  List<Widget> Tabs = [];
 
   @override
   void initState() {
     super.initState();
     ws.open("wss://tranquil-journey-23890.herokuapp.com");
+    Tabs = [
+      ChatList(),
+      ContactList(ws),
+    ];
   }
 
   @override

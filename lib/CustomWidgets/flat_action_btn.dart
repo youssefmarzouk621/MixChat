@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class FlatActionButton extends StatelessWidget {
-  final Icon icon;
+  final Widget icon;
   final IconData iconData;
   final Color iconColor;
   final double iconSize;
