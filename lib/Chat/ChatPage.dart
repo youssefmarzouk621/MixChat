@@ -1,4 +1,5 @@
 import 'package:chatup/Controllers/ChatController.dart';
+import 'package:chatup/CustomWidgets/MessagesGroupSeperator.dart';
 import 'package:chatup/CustomWidgets/flat_action_btn.dart';
 import 'package:chatup/CustomWidgets/flat_chat_message.dart';
 import 'package:chatup/CustomWidgets/flat_message_input_box.dart';
@@ -8,8 +9,8 @@ import 'package:chatup/CustomWidgets/flat_profile_image.dart';
 import 'package:chatup/Models/Message.dart';
 import 'package:chatup/Models/User.dart';
 import 'package:chatup/Statics/Statics.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:grouped_list/grouped_list.dart';
 
 class ChatPage extends StatefulWidget {
   User friend;
@@ -36,13 +37,6 @@ class _ChatPageState extends State<ChatPage> {
         result.sort((m1,m2) {
           return m1.createdAt.compareTo(m2.createdAt);
         });
-
-
-        final groups = groupBy(result, (Message message) {
-          Duration difference = message.createdAt.difference(result.);
-          return e.country;
-        });
-
         setState(() {
           messages = result.reversed.toList();
         });
@@ -72,22 +66,35 @@ class _ChatPageState extends State<ChatPage> {
             },
           ),
         ),
-        child: ListView.builder(
-          itemCount: messages.length,
+
+
+        child: GroupedListView<Message, String>(
+          sort: false,
+          elements: messages,
+          groupBy: (message) {
+            return groupFormat.format(message.createdAt);
+          },
+          groupSeparatorBuilder: (String date) => MessagesGroupSeperator(
+            title: date,
+          ),
+
           padding: EdgeInsets.only(
             bottom: 5.0,
           ),
           reverse: true,
-          itemBuilder: (context, index) {
+          order: GroupedListOrder.DESC,
 
-            return FlatChatMessage(
-              message: messages[index].message,
-              messageType: messages[index].messageType,
-              showTime: true,
-              time: dateFormat.format(messages[index].createdAt) ,
-            );
-          },
+          itemBuilder: (context, dynamic msg) => FlatChatMessage(
+            message: msg.message,
+            messageType: msg.messageType,
+            showTime: true,
+            time: timeFormat.format(msg.createdAt) ,
+          ),
         ),
+
+
+
+
 
         footer: Container(
           padding: EdgeInsets.only(

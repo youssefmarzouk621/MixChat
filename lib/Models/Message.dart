@@ -13,14 +13,17 @@ MessageType messageType;
 Message(this.id, this.sender, this.receiver, this.type, this.message, this.createdAt, this.messageType);
 
 Message.fromJson(Map<String, dynamic> json,String connected) {
-  String dateString = json['createdAt'] as String;
 
   this.id = json['_id'] as String;
   this.sender = json['sender'] as String;
   this.receiver = json['receiver'] as String;
   this.type = json['type'] as String;
   this.message = json['message'] as String;
+
+  //handling dateTime
+  String dateString = json['createdAt'] as String;
   this.createdAt = DateTime.parse(dateString);
+  this.createdAt.add(const Duration(hours: 1));
 
   if(connected==sender){
     this.messageType = MessageType.sent;

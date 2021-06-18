@@ -33,6 +33,14 @@ class ChatController {
 
   }
 
+  void groupMessages(List<Message> messages){
 
+    for( var i = 0 ; i < messages.length; i++ ) {
+      // if(i!=0){
+      //   Duration difference = messages[i].createdAt.difference(messages[i-1].createdAt);
+      //   difference.inDays
+      // }
+    }
+  }
 
 }

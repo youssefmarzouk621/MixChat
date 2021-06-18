@@ -9,11 +9,13 @@ class FlatChatMessage extends StatelessWidget {
   final Color textColor;
   final String time;
   final bool showTime;
+
+
+
   final double maxWidth;
   final double minWidth;
 
-  FlatChatMessage(
-      {this.message, this.messageType, this.backgroundColor, this.textColor, this.time, this.showTime, this.minWidth, this.maxWidth});
+  FlatChatMessage({this.message, this.messageType, this.backgroundColor, this.textColor, this.time, this.showTime, this.minWidth, this.maxWidth});
 
   CrossAxisAlignment messageAlignment() {
     if (messageType == null || messageType == MessageType.received) {
