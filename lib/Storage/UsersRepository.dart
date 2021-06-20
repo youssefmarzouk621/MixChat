@@ -24,7 +24,7 @@ class UsersRepository {
     ''';
     final data = await db.rawQuery(sql);
     if(data.length!=0){
-      final user = CoreUser.fromJson(data.first);
+      final user = CoreUser.fromJson(data.last);
       return user;
     }
     return null;
@@ -70,6 +70,18 @@ class UsersRepository {
 
   static Future<void> deleteUser(CoreUser user) async {
 
+    final sql = '''DELETE FROM ${DatabaseCreator.UsersTable}
+    WHERE "id" = ?
+    ''';
+
+    List<dynamic> params = [user.id];
+    final result = await db.rawDelete(sql, params);
+
+    print("user deleted");
+  }
+
+  static Future<void> deleteConnectedUser() async {
+    CoreUser user = await getConnectedUser();
     final sql = '''DELETE FROM ${DatabaseCreator.UsersTable}
     WHERE "id" = ?
     ''';

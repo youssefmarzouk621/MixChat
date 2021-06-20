@@ -4,8 +4,11 @@ import 'package:chatup/CustomWidgets/flat_page_header.dart';
 import 'package:chatup/CustomWidgets/flat_page_wrapper.dart';
 import 'package:chatup/Home/ChatList.dart';
 import 'package:chatup/Home/ContactList.dart';
+import 'package:chatup/Login/loginPage.dart';
+import 'package:chatup/Storage/UsersRepository.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:sm_websocket/sm_websocket.dart';
 
 class Homepage extends StatefulWidget {
@@ -25,6 +28,7 @@ class _HomepageState extends State<Homepage> {
   void initState() {
     super.initState();
     ws.open("wss://tranquil-journey-23890.herokuapp.com");
+    EasyLoading.show(status: 'loading...');
     Tabs = [
       ChatList(),
       ContactList(ws),
@@ -35,6 +39,7 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
 
     ws.onSuccess(() async {
+      EasyLoading.dismiss();
       await Flushbar(
           title: 'Hey Youssef',
           message: 'Connected successfully',
@@ -78,9 +83,18 @@ class _HomepageState extends State<Homepage> {
             title: "MixChat",
             suffixWidget: FlatActionButton(
               onPressed: (){
+                EasyLoading.show(status: 'loading...');
                 ws.close();
                 ws.onClose(() {
-                  print("closed connection");
+                  print("closed connection to socket");
+                  UsersRepository.deleteConnectedUser().then((value) => {
+                    print("wipe connected user"),
+                  EasyLoading.dismiss(),
+                    Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (context) => LoginPage())
+                    ),
+                  });
+
                 });
               },
               iconData: Icons.logout,

@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
 
-String baseURL = "10.0.2.2:3000"; //10.0.2.2:9090
+String baseURL = "10.0.2.2:3000"; //10.0.2.2:3000
 String baseUploadsURL = "http://10.0.2.2:3000/uploads/";//ressources route
 
 DateFormat dateFormat = DateFormat("dd/MM/yyyy HH:mm");
@@ -20,7 +22,6 @@ void configLoading() {
     ..textColor = Colors.yellow
     ..maskColor = Colors.blue.withOpacity(0.5)
     ..userInteractions = true
-    ..dismissOnTap = false
-    ..customAnimation = CustomAnimation();
+    ..dismissOnTap = false;
 }
 

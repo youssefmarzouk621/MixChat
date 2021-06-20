@@ -1,5 +1,6 @@
 import 'package:chatup/Controllers/UsersController.dart';
 import 'package:chatup/Home/HomePage.dart';
+import 'package:chatup/Statics/Statics.dart';
 import 'package:flutter/material.dart';
 import 'package:chatup/CustomWidgets/title.dart';
 import 'package:chatup/Signup/signup.dart';
@@ -115,12 +116,12 @@ class _LoginPageState extends State<LoginPage> {
             return;
           }
           _formKey.currentState.save();
-          EasyLoading.init();
           EasyLoading.show(status: 'loading...');
           usersController.Login(email, password).then((responseCode) {
-            EasyLoading.dismiss(animation: true);
+            print("response code :"+responseCode.toString());
             switch(responseCode) {
               case 200: {
+                EasyLoading.dismiss();
                 Navigator.push(
                     context, MaterialPageRoute(builder: (context) => Homepage())
                 );

@@ -59,5 +59,8 @@ class CoreUser {
     this.touchId = touchId;
   }
 
-
+  @override
+  String toString() {
+    return 'CoreUser{id: $id, firstName: $firstName, lastName: $lastName, email: $email, token: $token}';
+  }
 }
