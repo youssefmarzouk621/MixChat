@@ -1,5 +1,4 @@
 import 'package:chatup/CustomWidgets/flat_chat_message.dart';
-import 'package:intl/intl.dart';
 
 class Message {
 String id;
@@ -7,10 +6,16 @@ String sender;
 String receiver;
 String type;
 String message;
+
+String discussionId;
+String seen="false";
+
 DateTime createdAt;
 MessageType messageType;
 
 Message(this.id, this.sender, this.receiver, this.type, this.message, this.createdAt, this.messageType);
+
+
 
 Message.fromJson(Map<String, dynamic> json,String connected) {
 
@@ -19,6 +24,9 @@ Message.fromJson(Map<String, dynamic> json,String connected) {
   this.receiver = json['receiver'] as String;
   this.type = json['type'] as String;
   this.message = json['message'] as String;
+
+  this.discussionId = json['discussionId'] as String;
+  this.seen = json['seen'] as String;
 
   //handling dateTime
   String dateString = json['createdAt'] as String;
@@ -38,8 +46,11 @@ Map<String, dynamic> toJson() => {
   'receiver': receiver,
   'type': type,
   'message': message,
+  'discussionId': discussionId,
+  'seen':"false",
   'createdAt': createdAt.toString(),
 };
+
 
 
 }

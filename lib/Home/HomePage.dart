@@ -30,7 +30,7 @@ class _HomepageState extends State<Homepage> {
     ws.open("wss://tranquil-journey-23890.herokuapp.com");
     EasyLoading.show(status: 'loading...');
     Tabs = [
-      ChatList(),
+      ChatList(ws),
       ContactList(ws),
     ];
   }

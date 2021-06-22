@@ -1,3 +1,4 @@
+import 'package:chatup/Controllers/ChatController.dart';
 import 'package:chatup/CustomWidgets/flat_add_story_btn.dart';
 import 'package:chatup/CustomWidgets/flat_chat_item.dart';
 import 'package:chatup/CustomWidgets/flat_counter.dart';
@@ -6,17 +7,30 @@ import 'package:chatup/CustomWidgets/flat_section_header.dart';
 import 'package:chatup/Story/Story.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sm_websocket/sm_websocket.dart';
 
 
 
 class ChatList extends StatefulWidget{
+  WebSocket ws;
+
+  ChatList(this.ws);
 
   @override
   _ChatListState createState() => _ChatListState();
 }
 
 class _ChatListState extends State<ChatList> {
+  final ChatController chatController = ChatController();
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    /*chatController.getConversations().then((value) => {
+      print("done")
+    });*/
+  }
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -47,6 +61,7 @@ class _ChatListState extends State<ChatList> {
                   ),
                   child: FlatAddStoryBtn(
                     onPressed: () {
+
                       print("clicked add story");
                       Navigator.push(
                           context, MaterialPageRoute(builder: (context) => Story())

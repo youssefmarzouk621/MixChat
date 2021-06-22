@@ -9,19 +9,16 @@ DateFormat dateFormat = DateFormat("dd/MM/yyyy HH:mm");
 DateFormat groupFormat = DateFormat("dd/MM/yyyy");
 DateFormat timeFormat = DateFormat("HH:mm");
 
-void configLoading() {
-  EasyLoading.instance
-    ..displayDuration = const Duration(milliseconds: 2000)
-    ..indicatorType = EasyLoadingIndicatorType.fadingCircle
-    ..loadingStyle = EasyLoadingStyle.dark
-    ..indicatorSize = 45.0
-    ..radius = 10.0
-    ..progressColor = Colors.yellow
-    ..backgroundColor = Colors.green
-    ..indicatorColor = Colors.yellow
-    ..textColor = Colors.yellow
-    ..maskColor = Colors.blue.withOpacity(0.5)
-    ..userInteractions = true
-    ..dismissOnTap = false;
+void logLongString(String s) {
+  if (s == null || s.length <= 0) return;
+  const int n = 1000;
+  int startIndex = 0;
+  int endIndex = n;
+  while (startIndex < s.length) {
+    if (endIndex > s.length) endIndex = s.length;
+    print(s.substring(startIndex, endIndex));
+    startIndex += n;
+    endIndex = startIndex + n;
+  }
 }
 

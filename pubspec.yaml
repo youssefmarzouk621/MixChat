@@ -37,6 +37,7 @@ dependencies:
   grouped_list: ^3.2.3 # Grouping Messages by Date
   sqflite: # local Storage
   flutter_easyloading:
+  string_to_hex: ^0.2.1+30
 
 dev_dependencies:
   flutter_test:
