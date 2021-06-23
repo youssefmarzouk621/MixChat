@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.nunitoSansTextTheme(
           Theme.of(context).textTheme,
         ),
-        primaryColor: Color(0xff435de6),
+        primaryColor: Color(0xff0da773),
         accentColor: Color(0xffF56D58),
         primaryColorDark: Color(0xff262833),
         primaryColorLight: Color(0xffFCF9F5),
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.nunitoSansTextTheme(
           Theme.of(context).textTheme,
         ),
-        primaryColor: Color(0xff435de6),
+        primaryColor: Color(0xff0da773),
         accentColor: Color(0xffF56D58),
         primaryColorDark: Color(0xffFFFFFF),
         primaryColorLight: Color(0xff000000),
@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
               return Container(
                 child: Center(
                     child: SpinKitDoubleBounce(
-                    color: Theme.of(context).primaryColorDark,
+                    color: Theme.of(context).primaryColor,
                     size: 50.0,
                   )
                 )

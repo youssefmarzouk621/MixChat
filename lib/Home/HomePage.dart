@@ -74,6 +74,7 @@ class _HomepageState extends State<Homepage> {
 
 
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColorLight,
       body: new WillPopScope(
         onWillPop: () async => false,
         child: FlatPageWrapper(
@@ -105,6 +106,9 @@ class _HomepageState extends State<Homepage> {
       ),
 
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Theme.of(context).primaryColorLight,
+        selectedItemColor: Theme.of(context).primaryColor,
+        unselectedItemColor: Theme.of(context).primaryColorDark,
         currentIndex: index,
         type: BottomNavigationBarType.fixed,
         iconSize: 30,

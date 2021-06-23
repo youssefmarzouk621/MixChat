@@ -32,7 +32,7 @@ class _ContactListState extends State<ContactList> {
           return Container(
               child: Center(
                   child: SpinKitDoubleBounce(
-                    color: Theme.of(context).primaryColorDark,
+                    color: Theme.of(context).primaryColor,
                     size: 50.0,
                   )
               )
