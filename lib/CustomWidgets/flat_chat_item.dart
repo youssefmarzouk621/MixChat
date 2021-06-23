@@ -13,7 +13,7 @@ class FlatChatItem extends StatelessWidget {
   final bool multiLineMessage;
   final Function onPressed;
   final Function onLongPress;
-
+  final String seen;
   FlatChatItem({
     this.profileImage,
     this.name,
@@ -25,6 +25,7 @@ class FlatChatItem extends StatelessWidget {
     this.multiLineMessage,
     this.onPressed,
     this.onLongPress,
+    this.seen,
   });
 
   @override
@@ -80,9 +81,9 @@ class FlatChatItem extends StatelessWidget {
                               softWrap: false,
                               maxLines: multiLineMessage == true ? 100 : 1,
                               style: TextStyle(
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.w600,
-                                color: messageColor ?? Theme.of(context).primaryColorDark.withOpacity(0.5),
+                                fontSize: seen == "false" ? 16 : 15,
+                                fontWeight: seen == "false" ? FontWeight.w900 : FontWeight.w600,
+                                color: seen == "false" ? Theme.of(context).primaryColorDark : Theme.of(context).primaryColorDark.withOpacity(0.5),
                               ),
                             ),
                           ),

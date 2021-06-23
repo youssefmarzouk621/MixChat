@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:chatup/Models/Conversations.dart';
 import 'package:chatup/Models/CoreUser.dart';
 import 'package:chatup/Models/Message.dart';
+import 'package:chatup/Models/PopulatedMessage.dart';
 import 'package:chatup/Statics/Statics.dart';
 import 'package:chatup/Storage/UsersRepository.dart';
 import 'package:http/http.dart';
@@ -91,7 +92,7 @@ class ChatController {
     ); //parse message to JSON then to String
   }
 
-  Future<void> getConversations() async{
+  Future<List<Conversations>> getConversations() async{
     CoreUser connectedUser = await UsersRepository.getConnectedUser();
 
     final response = await post(
@@ -107,11 +108,22 @@ class ChatController {
       var body = json.decode(response.body);
       List<Conversations> conversations = [];
 
+
       body.forEach((key, value) {
-        conversations.add(Conversations.fromJson(value, key, connectedUser));
+
+        List<PopulatedMessage> messages = [];
+        for(var message in value){
+          PopulatedMessage populatedMessage = PopulatedMessage.fromJson(message, connectedUser.id);
+          messages.add(populatedMessage);
+        }
+        messages.sort((m1,m2) {
+          return m1.createdAt.compareTo(m2.createdAt);
+        });
+        Conversations conversation = Conversations.fromJson(messages, key, connectedUser);
+        conversations.add(conversation);
       });
 
-      print(conversations);
+      return conversations;
     }else{
       throw Exception('Request API Failed');
     }

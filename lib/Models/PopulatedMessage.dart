@@ -19,9 +19,7 @@ class PopulatedMessage {
 
 
   PopulatedMessage.fromJson(Map<String, dynamic> json,String connected) {
-    print("inside populated mesages");
-    print("arguments :");
-    print(json);
+
     this.id = json['_id'] as String;
     this.sender = User.fromJson(json['sender']);
     this.receiver = User.fromJson(json['receiver']);
@@ -54,6 +52,8 @@ class PopulatedMessage {
     'createdAt': createdAt.toString(),
   };
 
-
-
+  @override
+  String toString() {
+    return 'PopulatedMessage{message: $message}';
+  }
 }
