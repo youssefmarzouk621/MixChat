@@ -110,34 +110,9 @@ class _ChatListState extends State<ChatList> {
           ),
         ),
 
-        FlatSectionHeader(
-          title: "Marked Important",
-        ), //Marked Important
-
-        FlatChatItem(
-          onLongPress: () {
-            print("long pressed");
-          },
-          onPressed: () {
-            /*Navigator.push(
-            context, MaterialPageRoute(builder: (context) => ChatPage())
-        );*/
-          },
-          name: "Akshaye JH",
-          profileImage: FlatProfileImage(
-            imageUrl:
-                "https://cdn.dribbble.com/users/1281912/avatars/normal/febecc326c76154551f9d4bbab73f97b.jpg?1468927304",
-            onlineIndicator: true,
-          ),
-          message: "Hello World!, Welcome to Flat Social - Flutter UI Kit.",
-          multiLineMessage: true,
-          counter: FlatCounter(
-            text: "1",
-          ),
-        ),
 
         FlatSectionHeader(
-          title: "Chats",
+          title: "Messages",
         ),
 
         //Chats
@@ -149,14 +124,18 @@ class _ChatListState extends State<ChatList> {
               friend=item.messages.first.receiver;
             }
 
+            int unseenMessages=chatController.getUnseenMessages(item.messages,connectedUser);
             return FlatChatItem(
               profileImage: FlatProfileImage(
                 onlineIndicator: true,
                 imageUrl: baseUploadsURL+friend.avatar,
               ),
               name: friend.firstName+" "+friend.lastName,
-              message: item.messages.last.message,
+              message: item.messages.last.sender.id==connectedUser.id ? "Vous :"+item.messages.last.message : item.messages.last.message,
               seen: item.messages.last.seen,
+              counter: unseenMessages!=0 ? FlatCounter(text: "$unseenMessages") : Text(""),
+              messageColor: (item.messages.last.sender.id!=connectedUser.id && item.messages.last.seen=="false") ? Theme.of(context).primaryColorDark : Theme.of(context).primaryColorDark.withOpacity(0.5),
+
             );
           }).toList(),
         )

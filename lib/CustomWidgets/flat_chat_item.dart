@@ -83,7 +83,7 @@ class FlatChatItem extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: seen == "false" ? 16 : 15,
                                 fontWeight: seen == "false" ? FontWeight.w900 : FontWeight.w600,
-                                color: seen == "false" ? Theme.of(context).primaryColorDark : Theme.of(context).primaryColorDark.withOpacity(0.5),
+                                color: messageColor ?? Theme.of(context).primaryColorDark.withOpacity(0.5),
                               ),
                             ),
                           ),

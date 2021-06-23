@@ -36,9 +36,9 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
     super.initState();
+
     chatController.getMessages(
       sender: widget.friend.id, //(friend)
-      receiver: "60cb38f5063b48abf6cedc2d", //(connectedUser)
     ).then((result) {
 
         result.sort((m1,m2) {

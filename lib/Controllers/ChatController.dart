@@ -11,7 +11,8 @@ import 'package:sm_websocket/sm_websocket.dart';
 import 'package:string_to_hex/string_to_hex.dart';
 
 class ChatController {
-  Future<List<Message>> getMessages({String sender,String receiver}) async{
+  Future<List<Message>> getMessages({String sender}) async{
+    CoreUser connectedUser = await UsersRepository.getConnectedUser();
     final response = await post(
       Uri.http(baseURL,"api/chat/getMessages/"),
       headers: <String, String>{
@@ -19,7 +20,7 @@ class ChatController {
       },
       body: jsonEncode(<String, String>{
         "sender": sender,
-        "receiver": receiver,
+        "receiver": connectedUser.id,
       }),
     );
     if(response.statusCode==200){
@@ -27,7 +28,7 @@ class ChatController {
       List<Message> messages = [];
 
       for(var obj in body){
-        Message message = Message.fromJson(obj,receiver);
+        Message message = Message.fromJson(obj,connectedUser.id);
         messages.add(message);
       }
 
@@ -39,13 +40,15 @@ class ChatController {
   }
 
   Future<String> addMessageToDataBase({Message message}) async{
+    CoreUser connectedUser = await UsersRepository.getConnectedUser();
+
     final response = await post(
       Uri.http(baseURL,"api/chat/addMessage/"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
-        "sender": message.sender,
+        "sender": connectedUser.id,
         "receiver": message.receiver,
         "type": message.type,
         "message": message.message,
@@ -85,8 +88,11 @@ class ChatController {
 
 
   void sendMessageToWebSocket({Message message,WebSocket webSocket}) async{
-    String discussionId = await this.generateDiscussionId(sender: message.sender,receiver: message.receiver);
+    CoreUser connectedUser = await UsersRepository.getConnectedUser();
+
+    String discussionId = await this.generateDiscussionId(sender: connectedUser.id,receiver: message.receiver);
     message.discussionId=discussionId;
+
     webSocket.send(
         jsonEncode(message.toJson())
     ); //parse message to JSON then to String
@@ -127,5 +133,16 @@ class ChatController {
     }else{
       throw Exception('Request API Failed');
     }
+  }
+
+  int getUnseenMessages(List<PopulatedMessage> messages,CoreUser connectedUser){
+    int count=0;
+    for(var message in messages){
+      if(message.seen=="false" && (message.sender.id!=connectedUser.id)){
+        count++;
+      }
+    }
+    return count;
+
   }
 }
