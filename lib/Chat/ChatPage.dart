@@ -163,7 +163,6 @@ class _ChatPageState extends State<ChatPage> {
 
                   //add message to conversation
                   setState(() {
-
                     messages.add(Message("id", "60cb38f5063b48abf6cedc2d", widget.friend.id, "text", messageValue.text, DateTime.now(), MessageType.sent));
                     messages.sort((m1,m2) {
                       return m1.createdAt.compareTo(m2.createdAt);

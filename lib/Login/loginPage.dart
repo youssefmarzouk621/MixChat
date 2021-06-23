@@ -1,7 +1,10 @@
+import 'package:chatup/Controllers/UsersController.dart';
 import 'package:chatup/Home/HomePage.dart';
+import 'package:chatup/Statics/Statics.dart';
 import 'package:flutter/material.dart';
 import 'package:chatup/CustomWidgets/title.dart';
 import 'package:chatup/Signup/signup.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -17,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   String email;
   String password;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  final UsersController usersController = UsersController();
   Widget _backButton() {
     return InkWell(
       onTap: () {
@@ -113,9 +116,42 @@ class _LoginPageState extends State<LoginPage> {
             return;
           }
           _formKey.currentState.save();
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Homepage())
-          );
+          EasyLoading.show(status: 'loading...');
+          usersController.Login(email, password).then((responseCode) {
+            print("response code :"+responseCode.toString());
+            switch(responseCode) {
+              case 200: {
+                EasyLoading.dismiss();
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Homepage())
+                );
+              }
+              break;
+
+              case 201: {
+                EasyLoading.showError('Mot de passe incorrect');
+                print("Mot de passe incorrect");
+              }
+              break;
+
+              case 202: {
+                EasyLoading.showError("Ce compte n'exsite pas");
+              }
+              break;
+
+              case 203: {
+                EasyLoading.showError('Verifier votre compte');
+              }
+              break;
+
+              default: {
+                EasyLoading.showError('Try again later');
+              }
+              break;
+            }
+
+          });
+
         },
         child: InkWell(
           child: Container(

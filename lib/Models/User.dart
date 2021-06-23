@@ -1,3 +1,4 @@
+
 class User {
   String id;
   String firstName;
@@ -30,5 +31,8 @@ class User {
     this.verified = json['verified'] as int;
   }
 
-
+  @override
+  String toString() {
+    return 'User{firstName: $firstName, lastName: $lastName, avatar: $avatar}';
+  }
 }

@@ -1,11 +1,13 @@
 import 'dart:convert';
 
+import 'package:chatup/Models/CoreUser.dart';
 import 'package:chatup/Models/User.dart';
 import 'package:chatup/Statics/Statics.dart';
+import 'package:chatup/Storage/UsersRepository.dart';
 import 'package:http/http.dart';
 
 class UsersController {
-  Future<User> Login(String username,String password) async{
+  Future<int> Login(String username,String password) async{
     final response = await post(
       Uri.http(baseURL,"api/users/login/"),
       headers: <String, String>{
@@ -16,19 +18,13 @@ class UsersController {
         "password": password,
       }),
     );
-    if(response.statusCode==200){
+    if(response.statusCode==200) {
       var jsonData = json.decode(response.body);
       User connectedUser = User.fromJson(jsonData);
-      return connectedUser;
-    }else if(response.statusCode==201){ //not verified
-      return null;
-    }else if(response.statusCode==202){ //user not found
-      return null;
-    }else if(response.statusCode==203){ //not verified
-      return null;
-    }else{
-      throw Exception('Request API Failed');
+      CoreUser storedUser = CoreUser.fromUser(connectedUser, jsonData['token'], "none", "none");
+      UsersRepository.addUser(storedUser);
     }
+      return response.statusCode;
   }
 
   Future<List<User>> getUsers() async{
