@@ -1,6 +1,8 @@
 import 'package:chatup/Controllers/UsersController.dart';
 import 'package:chatup/Home/HomePage.dart';
+import 'package:chatup/Models/CoreUser.dart';
 import 'package:chatup/Statics/Statics.dart';
+import 'package:chatup/Storage/UsersRepository.dart';
 import 'package:flutter/material.dart';
 import 'package:chatup/CustomWidgets/title.dart';
 import 'package:chatup/Signup/signup.dart';
@@ -117,13 +119,14 @@ class _LoginPageState extends State<LoginPage> {
           }
           _formKey.currentState.save();
           EasyLoading.show(status: 'loading...');
-          usersController.Login(email, password).then((responseCode) {
+          usersController.Login(email, password).then((responseCode) async {
             print("response code :"+responseCode.toString());
             switch(responseCode) {
               case 200: {
+                CoreUser connected = await UsersRepository.getConnectedUser();
                 EasyLoading.dismiss();
                 Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Homepage())
+                    context, MaterialPageRoute(builder: (context) => Homepage(connected))
                 );
               }
               break;

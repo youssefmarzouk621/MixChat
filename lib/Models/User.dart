@@ -1,4 +1,6 @@
 
+import 'package:chatup/Models/CoreUser.dart';
+
 class User {
   String id;
   String firstName;
@@ -30,6 +32,18 @@ class User {
     this.avatar = json['avatar'] as String;
     this.verified = json['verified'] as int;
   }
+
+  User.fromCoreUser(CoreUser user) {
+    this.id = user.id;
+    this.firstName = user.firstName;
+    this.lastName = user.lastName;
+    this.email = user.email;
+    this.password = user.password;
+    this.phone = user.phone;
+    this.avatar = user.avatar;
+    this.verified = 1;
+  }
+
 
   @override
   String toString() {

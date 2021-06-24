@@ -3,7 +3,7 @@ import 'package:chatup/Storage/databaseCreator.dart';
 
 class UsersRepository {
   static Future<List<CoreUser>> getAllUsers() async {
-    await Future.delayed(Duration(seconds: 3));
+
     await DatabaseCreator().initDatabase();
     final sql = '''
       SELECT * FROM '${DatabaseCreator.UsersTable}'
@@ -15,6 +15,7 @@ class UsersRepository {
       final user = CoreUser.fromJson(node);
       users.add(user);
     }
+    await Future.delayed(Duration(seconds: 3));
     return users;
   }
 

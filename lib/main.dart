@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
             if(snapshot.data.length==0){
               return WelcomePage();
             }else{
-              return Homepage();
+              return Homepage(snapshot.data.last);
             }
           }
         },

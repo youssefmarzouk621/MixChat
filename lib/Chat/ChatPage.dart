@@ -8,9 +8,12 @@ import 'package:chatup/CustomWidgets/flat_message_input_box.dart';
 import 'package:chatup/CustomWidgets/flat_page_header.dart';
 import 'package:chatup/CustomWidgets/flat_page_wrapper.dart';
 import 'package:chatup/CustomWidgets/flat_profile_image.dart';
+import 'package:chatup/Models/CoreUser.dart';
 import 'package:chatup/Models/Message.dart';
+import 'package:chatup/Models/PopulatedMessage.dart';
 import 'package:chatup/Models/User.dart';
 import 'package:chatup/Statics/Statics.dart';
+import 'package:chatup/Storage/UsersRepository.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:sm_websocket/sm_websocket.dart';
@@ -18,6 +21,7 @@ import 'package:sm_websocket/sm_websocket.dart';
 class ChatPage extends StatefulWidget {
   User friend;
   WebSocket ws;
+
   ChatPage(this.friend,this.ws);
 
   @override
@@ -26,16 +30,22 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
 
-  List<Message> messages = [];
+
   bool isEmptyField=true;
 
-
+  List<Message> messages = [];
   final ChatController chatController = ChatController();
   final messageValue = TextEditingController();
+  CoreUser connectedUser;
+
+
 
   @override
   void initState() {
     super.initState();
+    UsersRepository.getConnectedUser().then((value) => {
+      connectedUser=value
+    });
 
     chatController.getMessages(
       sender: widget.friend.id, //(friend)
@@ -54,8 +64,8 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
 
     widget.ws.onMessage((data) {
-      Message message = Message.fromJson(jsonDecode(data), "60cb38f5063b48abf6cedc2d");
-      if(message.receiver=="60cb38f5063b48abf6cedc2d"){
+      Message message = Message.fromJson(jsonDecode(data), connectedUser.id);
+      if(message.receiver==connectedUser.id){
         setState(() {
           messages.add(message);
         });
@@ -69,7 +79,7 @@ class _ChatPageState extends State<ChatPage> {
         header: FlatPageHeader(
           prefixWidget: FlatActionButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.of(context).pop("refresh");
             },
           ),
           title: widget.friend.firstName+" "+widget.friend.lastName,
@@ -101,12 +111,14 @@ class _ChatPageState extends State<ChatPage> {
           reverse: true,
           order: GroupedListOrder.DESC,
 
-          itemBuilder: (context, dynamic msg) => FlatChatMessage(
-            message: msg.message,
-            messageType: msg.messageType,
-            showTime: true,
-            time: timeFormat.format(msg.createdAt) ,
-          ),
+          itemBuilder: (context, dynamic msg) {
+            return FlatChatMessage(
+              message: msg.message,
+              messageType: msg.messageType,
+              showTime: msg.id==messages.first.id,
+              time: timeFormat.format(msg.createdAt),
+            );
+          },
         ),
 
 
@@ -148,13 +160,13 @@ class _ChatPageState extends State<ChatPage> {
                 }else{
                   //add message to socket
                   chatController.sendMessageToWebSocket(
-                    message: Message("id", "60cb38f5063b48abf6cedc2d", widget.friend.id, "text", messageValue.text, DateTime.now(), MessageType.sent),
+                    message: Message("id", connectedUser.id, widget.friend.id, "text", messageValue.text, DateTime.now(), MessageType.sent),
                       webSocket: widget.ws
                   );
 
                   //add message database
                   chatController.addMessageToDataBase(
-                      message: Message("id", "60cb38f5063b48abf6cedc2d", widget.friend.id, "text", messageValue.text, DateTime.now(), MessageType.sent)
+                      message: Message("id", connectedUser.id, widget.friend.id, "text", messageValue.text, DateTime.now(), MessageType.sent)
                   ).then((response) => {
                     print(response)
                   });
@@ -163,7 +175,7 @@ class _ChatPageState extends State<ChatPage> {
 
                   //add message to conversation
                   setState(() {
-                    messages.add(Message("id", "60cb38f5063b48abf6cedc2d", widget.friend.id, "text", messageValue.text, DateTime.now(), MessageType.sent));
+                    messages.add(Message("id", User.fromCoreUser(connectedUser).id, widget.friend.id, "text", messageValue.text, DateTime.now(), MessageType.sent));
                     messages.sort((m1,m2) {
                       return m1.createdAt.compareTo(m2.createdAt);
                     });

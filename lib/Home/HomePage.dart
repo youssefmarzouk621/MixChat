@@ -2,9 +2,12 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:chatup/CustomWidgets/flat_action_btn.dart';
 import 'package:chatup/CustomWidgets/flat_page_header.dart';
 import 'package:chatup/CustomWidgets/flat_page_wrapper.dart';
+import 'package:chatup/CustomWidgets/flat_profile_image.dart';
 import 'package:chatup/Home/ChatList.dart';
 import 'package:chatup/Home/ContactList.dart';
 import 'package:chatup/Login/loginPage.dart';
+import 'package:chatup/Models/CoreUser.dart';
+import 'package:chatup/Statics/Statics.dart';
 import 'package:chatup/Storage/UsersRepository.dart';
 
 import 'package:flutter/material.dart';
@@ -12,13 +15,15 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:sm_websocket/sm_websocket.dart';
 
 class Homepage extends StatefulWidget {
+  CoreUser connectedUser;
+
+  Homepage(this.connectedUser);
 
   @override
   _HomepageState createState() => _HomepageState();
 }
 
 class _HomepageState extends State<Homepage> {
-
   int index = 0;
   WebSocket ws = WebSocket();
 
@@ -27,6 +32,7 @@ class _HomepageState extends State<Homepage> {
   @override
   void initState() {
     super.initState();
+
     ws.open("wss://tranquil-journey-23890.herokuapp.com");
     EasyLoading.show(status: 'loading...');
     Tabs = [
@@ -37,13 +43,12 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
-
     ws.onSuccess(() async {
       EasyLoading.dismiss();
       await Flushbar(
-          title: 'Hey Youssef',
-          message: 'Connected successfully',
-          duration: Duration(seconds: 3),
+        title: 'Hey Youssef',
+        message: 'Connected successfully',
+        duration: Duration(seconds: 3),
       ).show(context);
       print("new connection");
     });
@@ -51,9 +56,9 @@ class _HomepageState extends State<Homepage> {
     ws.onFail(() async {
       print("fail");
       await Flushbar(
-          title: 'Error (Failed)',
-          message: 'Connection Failed',
-          duration: Duration(seconds: 3),
+        title: 'Error (Failed)',
+        message: 'Connection Failed',
+        duration: Duration(seconds: 3),
       ).show(context);
     });
 
@@ -64,38 +69,39 @@ class _HomepageState extends State<Homepage> {
     ws.onClose(() async {
       print("closed without logout");
       await Flushbar(
-          title: 'Warning (Closed)',
-          message: 'Lost connection ...',
-          duration: Duration(seconds: 3),
+        title: 'Warning (Closed)',
+        message: 'Lost connection ...',
+        duration: Duration(seconds: 3),
       ).show(context);
       ws.open("wss://tranquil-journey-23890.herokuapp.com");
-
     });
-
 
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColorLight,
       body: new WillPopScope(
         onWillPop: () async => false,
         child: FlatPageWrapper(
-            scrollType: ScrollType.floatingHeader,
-            header: FlatPageHeader(
-            prefixWidget: Text(""),
+          scrollType: ScrollType.floatingHeader,
+          header: FlatPageHeader(
+            prefixWidget: FlatProfileImage(
+              imageUrl: baseUploadsURL + widget.connectedUser.avatar,
+              size: 45,
+            ),
             title: "MixChat",
             suffixWidget: FlatActionButton(
-              onPressed: (){
+              onPressed: () {
                 EasyLoading.show(status: 'loading...');
                 ws.close();
                 ws.onClose(() {
                   print("closed connection to socket");
                   UsersRepository.deleteConnectedUser().then((value) => {
-                    print("wipe connected user"),
-                  EasyLoading.dismiss(),
-                    Navigator.pushReplacement(
-                    context, MaterialPageRoute(builder: (context) => LoginPage())
-                    ),
-                  });
-
+                        print("wipe connected user"),
+                        EasyLoading.dismiss(),
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginPage())),
+                      });
                 });
               },
               iconData: Icons.logout,
@@ -104,7 +110,6 @@ class _HomepageState extends State<Homepage> {
           child: Tabs[index],
         ),
       ),
-
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Theme.of(context).primaryColorLight,
         selectedItemColor: Theme.of(context).primaryColor,

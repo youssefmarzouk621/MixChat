@@ -79,7 +79,7 @@ class FlatChatItem extends StatelessWidget {
                               message ?? "Hello World!, text message",
                               overflow: TextOverflow.ellipsis,
                               softWrap: false,
-                              maxLines: multiLineMessage == true ? 100 : 1,
+                              maxLines: multiLineMessage == true ? 5 : 1,
                               style: TextStyle(
                                 fontSize: seen == "false" ? 16 : 15,
                                 fontWeight: seen == "false" ? FontWeight.w900 : FontWeight.w600,

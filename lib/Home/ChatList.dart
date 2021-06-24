@@ -1,3 +1,4 @@
+import 'package:chatup/Chat/ChatPage.dart';
 import 'package:chatup/Controllers/ChatController.dart';
 import 'package:chatup/CustomWidgets/CardItem.dart';
 import 'package:chatup/CustomWidgets/flat_add_story_btn.dart';
@@ -27,23 +28,19 @@ class ChatList extends StatefulWidget {
 class _ChatListState extends State<ChatList> {
   final ChatController chatController = ChatController();
   List<Conversations> conversations = [];
-  ScrollController _controller = new ScrollController();
   CoreUser connectedUser;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     chatController.getConversations().then((convos) => {
-      UsersRepository.getConnectedUser().then((user) => {
-        setState(() {
-          connectedUser = user;
-          conversations = convos;
-        })
-      })
-    });
-
-
-
+          UsersRepository.getConnectedUser().then((user) => {
+                setState(() {
+                  connectedUser = user;
+                  conversations = convos;
+                })
+              })
+        });
   }
 
   @override
@@ -69,7 +66,8 @@ class _ChatListState extends State<ChatList> {
           ),
           child: ListView(
             scrollDirection: Axis.horizontal,
-            physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+            physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics()),
             children: [
               Padding(
                 padding: EdgeInsets.only(
@@ -110,7 +108,6 @@ class _ChatListState extends State<ChatList> {
           ),
         ),
 
-
         FlatSectionHeader(
           title: "Messages",
         ),
@@ -120,22 +117,47 @@ class _ChatListState extends State<ChatList> {
           children: conversations.map((item) {
             //print(conversations);
             User friend = item.messages.first.sender;
-            if(item.messages.first.sender.id==connectedUser.id){
-              friend=item.messages.first.receiver;
+            if (item.messages.first.sender.id == connectedUser.id) {
+              friend = item.messages.first.receiver;
             }
 
-            int unseenMessages=chatController.getUnseenMessages(item.messages,connectedUser);
+            int unseenMessages =
+                chatController.getUnseenMessages(item.messages, connectedUser);
+            String displayedMessage =
+                item.messages.last.sender.id == connectedUser.id
+                    ? "Vous :" + item.messages.last.message
+                    : item.messages.last.message;
             return FlatChatItem(
               profileImage: FlatProfileImage(
                 onlineIndicator: true,
-                imageUrl: baseUploadsURL+friend.avatar,
+                imageUrl: baseUploadsURL + friend.avatar,
               ),
-              name: friend.firstName+" "+friend.lastName,
-              message: item.messages.last.sender.id==connectedUser.id ? "Vous :"+item.messages.last.message : item.messages.last.message,
+              name: friend.firstName + " " + friend.lastName,
+              message: displayedMessage +
+                  " · " +
+                  timeFormat.format(item.messages.last.createdAt),
               seen: item.messages.last.seen,
-              counter: unseenMessages!=0 ? FlatCounter(text: "$unseenMessages") : Text(""),
-              messageColor: (item.messages.last.sender.id!=connectedUser.id && item.messages.last.seen=="false") ? Theme.of(context).primaryColorDark : Theme.of(context).primaryColorDark.withOpacity(0.5),
-
+              counter: unseenMessages != 0
+                  ? FlatCounter(text: "$unseenMessages")
+                  : Text(""),
+              messageColor: (item.messages.last.sender.id != connectedUser.id &&
+                      item.messages.last.seen == "false")
+                  ? Theme.of(context).primaryColorDark
+                  : Theme.of(context).primaryColorDark.withOpacity(0.5),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) =>ChatPage(friend, widget.ws)))
+                    .then((value) => {
+                      if(value!=null && value=="refresh"){
+                        chatController.getConversations().then((updated) => {
+                          setState(() {
+                            conversations = updated;
+                          })
+                        })
+                      }
+                    });
+              },
             );
           }).toList(),
         )
