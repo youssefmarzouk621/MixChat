@@ -113,6 +113,7 @@ class _ChatListState extends State<ChatList> {
         ),
 
         //Chats
+
         Column(
           children: conversations.map((item) {
             //print(conversations);
@@ -121,12 +122,8 @@ class _ChatListState extends State<ChatList> {
               friend = item.messages.first.receiver;
             }
 
-            int unseenMessages =
-                chatController.getUnseenMessages(item.messages, connectedUser);
-            String displayedMessage =
-                item.messages.last.sender.id == connectedUser.id
-                    ? "Vous :" + item.messages.last.message
-                    : item.messages.last.message;
+            int unseenMessages = chatController.getUnseenMessages(item.messages, connectedUser);
+            String displayedMessage = item.messages.last.sender.id == connectedUser.id ? "Vous :" + item.messages.last.message : item.messages.last.message;
             return FlatChatItem(
               profileImage: FlatProfileImage(
                 onlineIndicator: true,

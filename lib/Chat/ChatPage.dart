@@ -10,7 +10,6 @@ import 'package:chatup/CustomWidgets/flat_page_wrapper.dart';
 import 'package:chatup/CustomWidgets/flat_profile_image.dart';
 import 'package:chatup/Models/CoreUser.dart';
 import 'package:chatup/Models/Message.dart';
-import 'package:chatup/Models/PopulatedMessage.dart';
 import 'package:chatup/Models/User.dart';
 import 'package:chatup/Statics/Statics.dart';
 import 'package:chatup/Storage/UsersRepository.dart';
@@ -95,30 +94,33 @@ class _ChatPageState extends State<ChatPage> {
         ),
 
 
-        child: GroupedListView<Message, String>(
-          sort: false,
-          elements: messages,
-          groupBy: (message) {
-            return groupFormat.format(message.createdAt);
-          },
-          groupSeparatorBuilder: (String date) => MessagesGroupSeperator(
-            title: date,
-          ),
+        child: GestureDetector(
+          onTapUp: (details) => FocusScope.of(context).unfocus(),
+          child: GroupedListView<Message, String>(
+            sort: false,
+            elements: messages,
+            groupBy: (message) {
+              return groupFormat.format(message.createdAt);
+            },
+            groupSeparatorBuilder: (String date) => MessagesGroupSeperator(
+              title: date,
+            ),
 
-          padding: EdgeInsets.only(
-            bottom: 5.0,
-          ),
-          reverse: true,
-          order: GroupedListOrder.DESC,
+            padding: EdgeInsets.only(
+              bottom: 5.0,
+            ),
+            reverse: true,
+            order: GroupedListOrder.DESC,
 
-          itemBuilder: (context, dynamic msg) {
-            return FlatChatMessage(
-              message: msg.message,
-              messageType: msg.messageType,
-              showTime: msg.id==messages.first.id,
-              time: timeFormat.format(msg.createdAt),
-            );
-          },
+            itemBuilder: (context, dynamic msg) {
+              return FlatChatMessage(
+                message: msg.message,
+                messageType: msg.messageType,
+                showTime: msg.id==messages.first.id,
+                time: timeFormat.format(msg.createdAt),
+              );
+            },
+          ),
         ),
 
 

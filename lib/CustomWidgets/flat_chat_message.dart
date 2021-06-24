@@ -62,7 +62,7 @@ class _FlatChatMessageState extends State<FlatChatMessage> {
     }
   }
 
-  Text messageTime() {
+  Widget messageTime() {
     if(widget.showTime != null && widget.showTime == true) {
       return Text(
         widget.time ?? "Time",
@@ -78,12 +78,9 @@ class _FlatChatMessageState extends State<FlatChatMessage> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: (){
-        setState(() {
-          widget.showTime=!widget.showTime;
-        });
-      },
+    return GestureDetector(
+      onLongPress: () => setState(() { widget.showTime=!widget.showTime; }),
+      onLongPressEnd: (details) => setState(() { widget.showTime=!widget.showTime; }) ,
       child: Container(
         padding: EdgeInsets.symmetric(
           vertical: 3.0,
