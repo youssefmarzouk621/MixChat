@@ -24,7 +24,7 @@ class ChatList extends StatefulWidget {
   @override
   _ChatListState createState() => _ChatListState();
 }
-
+  
 class _ChatListState extends State<ChatList> {
   final ChatController chatController = ChatController();
   List<Conversations> conversations = [];
