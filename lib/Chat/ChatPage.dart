@@ -14,6 +14,8 @@ import 'package:chatup/Models/User.dart';
 import 'package:chatup/Statics/Statics.dart';
 import 'package:chatup/Storage/UsersRepository.dart';
 import 'package:flutter/material.dart';
+import 'package:focused_menu/focused_menu.dart';
+import 'package:focused_menu/modals.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:sm_websocket/sm_websocket.dart';
 
@@ -21,50 +23,44 @@ class ChatPage extends StatefulWidget {
   User friend;
   WebSocket ws;
 
-  ChatPage(this.friend,this.ws);
+  ChatPage(this.friend, this.ws);
 
   @override
   _ChatPageState createState() => _ChatPageState();
 }
 
 class _ChatPageState extends State<ChatPage> {
-
-
-  bool isEmptyField=true;
+  bool isEmptyField = true;
 
   List<Message> messages = [];
   final ChatController chatController = ChatController();
   final messageValue = TextEditingController();
   CoreUser connectedUser;
 
-
-
   @override
   void initState() {
     super.initState();
-    UsersRepository.getConnectedUser().then((value) => {
-      connectedUser=value
-    });
+    UsersRepository.getConnectedUser().then((value) => {connectedUser = value});
 
-    chatController.getMessages(
+    chatController
+        .getMessages(
       sender: widget.friend.id, //(friend)
-    ).then((result) {
-
-        result.sort((m1,m2) {
-          return m1.createdAt.compareTo(m2.createdAt);
-        });
-        setState(() {
-          messages = result.reversed.toList();
-        });
+    )
+        .then((result) {
+      result.sort((m1, m2) {
+        return m1.createdAt.compareTo(m2.createdAt);
+      });
+      setState(() {
+        messages = result.reversed.toList();
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-
     widget.ws.onMessage((data) {
       Message message = Message.fromJson(jsonDecode(data), connectedUser.id);
-      if(message.receiver==connectedUser.id){
+      if (message.receiver == connectedUser.id) {
         setState(() {
           messages.add(message);
         });
@@ -81,19 +77,17 @@ class _ChatPageState extends State<ChatPage> {
               Navigator.of(context).pop("refresh");
             },
           ),
-          title: widget.friend.firstName+" "+widget.friend.lastName,
+          title: widget.friend.firstName + " " + widget.friend.lastName,
           textSize: 22,
           suffixWidget: FlatProfileImage(
             size: 35.0,
             onlineIndicator: true,
-            imageUrl: baseUploadsURL+widget.friend.avatar,
+            imageUrl: baseUploadsURL + widget.friend.avatar,
             onPressed: () {
               print("Clicked to open Profile");
             },
           ),
         ),
-
-
         child: GestureDetector(
           onTapUp: (details) => FocusScope.of(context).unfocus(),
           child: GroupedListView<Message, String>(
@@ -105,28 +99,21 @@ class _ChatPageState extends State<ChatPage> {
             groupSeparatorBuilder: (String date) => MessagesGroupSeperator(
               title: date,
             ),
-
             padding: EdgeInsets.only(
               bottom: 5.0,
             ),
             reverse: true,
             order: GroupedListOrder.DESC,
-
             itemBuilder: (context, dynamic msg) {
               return FlatChatMessage(
                 message: msg.message,
                 messageType: msg.messageType,
-                showTime: msg.id==messages.first.id,
+                showTime: msg.id == messages.first.id,
                 time: timeFormat.format(msg.createdAt),
               );
             },
           ),
         ),
-
-
-
-
-
         footer: Container(
           padding: EdgeInsets.only(
             bottom: 10.0,
@@ -136,10 +123,10 @@ class _ChatPageState extends State<ChatPage> {
               controller: messageValue,
               onChanged: (value) {
                 setState(() {
-                  if(value.isEmpty){
-                    isEmptyField=true;
-                  }else{
-                    isEmptyField=false;
+                  if (value.isEmpty) {
+                    isEmptyField = true;
+                  } else {
+                    isEmptyField = false;
                   }
                 });
               },
@@ -149,59 +136,78 @@ class _ChatPageState extends State<ChatPage> {
                   color: Theme.of(context).primaryColorDark.withOpacity(0.6),
                 ),
                 border: InputBorder.none,
-                contentPadding: EdgeInsets.all(16.0,),
+                contentPadding: EdgeInsets.all(
+                  16.0,
+                ),
               ),
-              style: TextStyle(
-                  color: Theme.of(context).primaryColorDark
-              ),
+              style: TextStyle(color: Theme.of(context).primaryColorDark),
             ),
             sendBtn: FlatActionButton(
-              onPressed: (){
-                if(isEmptyField){
+              onPressed: () {
+                if (isEmptyField) {
                   print("send like");
-                }else{
+                } else {
                   //add message to socket
                   chatController.sendMessageToWebSocket(
-                    message: Message("id", connectedUser.id, widget.friend.id, "text", messageValue.text, DateTime.now(), MessageType.sent),
-                      webSocket: widget.ws
-                  );
+                      message: Message(
+                          "id",
+                          connectedUser.id,
+                          widget.friend.id,
+                          "text",
+                          messageValue.text,
+                          DateTime.now(),
+                          MessageType.sent),
+                      webSocket: widget.ws);
 
                   //add message database
-                  chatController.addMessageToDataBase(
-                      message: Message("id", connectedUser.id, widget.friend.id, "text", messageValue.text, DateTime.now(), MessageType.sent)
-                  ).then((response) => {
-                    print(response)
-                  });
+                  chatController
+                      .addMessageToDataBase(
+                          message: Message(
+                              "id",
+                              connectedUser.id,
+                              widget.friend.id,
+                              "text",
+                              messageValue.text,
+                              DateTime.now(),
+                              MessageType.sent))
+                      .then((response) => {print(response)});
 
                   //add message to localStorage
 
                   //add message to conversation
                   setState(() {
-                    messages.add(Message("id", User.fromCoreUser(connectedUser).id, widget.friend.id, "text", messageValue.text, DateTime.now(), MessageType.sent));
-                    messages.sort((m1,m2) {
+                    messages.add(Message(
+                        "id",
+                        User.fromCoreUser(connectedUser).id,
+                        widget.friend.id,
+                        "text",
+                        messageValue.text,
+                        DateTime.now(),
+                        MessageType.sent));
+                    messages.sort((m1, m2) {
                       return m1.createdAt.compareTo(m2.createdAt);
                     });
                     messages = messages.reversed.toList();
-                    messageValue.text="";
-                    isEmptyField=true;
+                    messageValue.text = "";
+                    isEmptyField = true;
                   });
                 }
               },
-              icon: isEmptyField ? RichText(
-                  text: TextSpan(
-                    text: '👍', // emoji characters
-                    style: TextStyle(
-                      fontSize: 24.0,
-                      fontFamily: 'EmojiOne',
+              icon: isEmptyField
+                  ? RichText(
+                      text: TextSpan(
+                      text: '👍', // emoji characters
+                      style: TextStyle(
+                        fontSize: 24.0,
+                        fontFamily: 'EmojiOne',
+                      ),
+                    ))
+                  : Icon(
+                      Icons.send,
+                      size: 24.0,
+                      color: Theme.of(context).primaryColorDark,
                     ),
-                  )
-              ) : Icon(
-                Icons.send,
-                size: 24.0,
-                color: Theme.of(context).primaryColorDark,
-              ),
             ),
-
             prefix: FlatActionButton(
               iconData: Icons.add,
               iconSize: 24.0,
@@ -216,6 +222,4 @@ class _ChatPageState extends State<ChatPage> {
       ),
     );
   }
-
-
 }

@@ -56,9 +56,7 @@ class _ChatListState extends State<ChatList> {
           top: 90.0,
           bottom: 12.0,
         )),
-        FlatSectionHeader(
-          title: "Recent Moments",
-        ),
+
         Container(
           height: 76.0,
           margin: EdgeInsets.symmetric(
@@ -144,7 +142,7 @@ class _ChatListState extends State<ChatList> {
               onPressed: () {
                 Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) =>ChatPage(friend, widget.ws)))
+                    CupertinoPageRoute(builder: (context) =>ChatPage(friend, widget.ws)))
                     .then((value) => {
                       if(value!=null && value=="refresh"){
                         chatController.getConversations().then((updated) => {

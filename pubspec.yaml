@@ -38,6 +38,8 @@ dependencies:
   sqflite: # local Storage
   flutter_easyloading:
   string_to_hex: ^0.2.1+30
+  focused_menu: ^1.0.0 # onLongPress Menu
+
 
 dev_dependencies:
   flutter_test:
