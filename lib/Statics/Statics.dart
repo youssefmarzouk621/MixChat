@@ -1,9 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
 
-String baseURL = "10.0.2.2:3000"; //10.0.2.2:3000
-String baseUploadsURL = "http://10.0.2.2:3000/uploads/";//ressources route
+//String baseURL = "10.0.2.2:3000"; //10.0.2.2:3000
+//String baseUploadsURL = "http://10.0.2.2:3000/uploads/";//ressources route
+
+String baseURL = "mixchatt.herokuapp.com"; //10.0.2.2:3000
+String baseUploadsURL =
+    "https://mixchatt.herokuapp.com/uploads/"; //ressources route
 
 DateFormat dateFormat = DateFormat("dd/MM/yyyy HH:mm");
 DateFormat groupFormat = DateFormat("dd/MM/yyyy");
@@ -21,4 +23,3 @@ void logLongString(String s) {
     endIndex = startIndex + n;
   }
 }
-

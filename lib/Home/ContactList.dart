@@ -50,7 +50,7 @@ class _ContactListState extends State<ContactList> {
                   return FlatChatItem(
                     onPressed: (){
                       Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => ChatPage(snapshot.data[index],widget.ws))
+                          context, CupertinoPageRoute(builder: (context) => ChatPage(snapshot.data[index],widget.ws))
                       );
                     },
                     profileImage: FlatProfileImage(
