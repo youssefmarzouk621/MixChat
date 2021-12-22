@@ -1,13 +1,11 @@
 import 'package:chatup/Controllers/UsersController.dart';
 import 'package:chatup/Home/HomePage.dart';
 import 'package:chatup/Models/CoreUser.dart';
-import 'package:chatup/Statics/Statics.dart';
 import 'package:chatup/Storage/UsersRepository.dart';
 import 'package:flutter/material.dart';
 import 'package:chatup/CustomWidgets/title.dart';
 import 'package:chatup/Signup/signup.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
@@ -120,41 +118,46 @@ class _LoginPageState extends State<LoginPage> {
           _formKey.currentState.save();
           EasyLoading.show(status: 'loading...');
           usersController.Login(email, password).then((responseCode) async {
-            print("response code :"+responseCode.toString());
-            switch(responseCode) {
-              case 200: {
-                CoreUser connected = await UsersRepository.getConnectedUser();
-                EasyLoading.dismiss();
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Homepage(connected))
-                );
-              }
-              break;
+            print("response code :" + responseCode.toString());
 
-              case 201: {
-                EasyLoading.showError('Mot de passe incorrect');
-                print("Mot de passe incorrect");
-              }
-              break;
+            switch (responseCode) {
+              case 200:
+                {
+                  CoreUser connected = await UsersRepository.getConnectedUser();
+                  EasyLoading.dismiss();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Homepage(connected)));
+                }
+                break;
 
-              case 202: {
-                EasyLoading.showError("Ce compte n'exsite pas");
-              }
-              break;
+              case 201:
+                {
+                  EasyLoading.showError('Mot de passe incorrect');
+                  print("Mot de passe incorrect");
+                }
+                break;
 
-              case 203: {
-                EasyLoading.showError('Verifier votre compte');
-              }
-              break;
+              case 202:
+                {
+                  EasyLoading.showError("Ce compte n'exsite pas");
+                }
+                break;
 
-              default: {
-                EasyLoading.showError('Try again later');
-              }
-              break;
+              case 203:
+                {
+                  EasyLoading.showError('Verifier votre compte');
+                }
+                break;
+
+              default:
+                {
+                  EasyLoading.showError('Try again later');
+                }
+                break;
             }
-
           });
-
         },
         child: InkWell(
           child: Container(
